@@ -30,3 +30,5 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     assert_select "title", "About | #{@base_title}"
   end
 end
+	
+git remote set-url origin https://[アクセストークン]@github.com/your-name/project-name.git
