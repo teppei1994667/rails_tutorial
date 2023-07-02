@@ -6,6 +6,8 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
+      reset session  # ログインの直前に必ずこれを書くこと(セッション固定攻撃への対策)
+      log_in user
       redirect_to user
     else
       flash.now[:danger] = 'Invalid email/password combination'
