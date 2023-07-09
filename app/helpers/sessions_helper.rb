@@ -20,7 +20,7 @@ module SessionsHelper
 		#（ユーザーIDにユーザーIDのcookiesを代入した結果）ユーザーIDのcookiesが存在すれば
 		elsif (user_id = cookies.encrypted[:user_id])
 			user = User.find_by(id: user_id)
-			if user && user.authenticated?(cookies[:remenber_token])
+			if user && user.authenticated?(cookies[:remember_token])
 				log_in user
 				@current_user = user
 			end
@@ -32,8 +32,16 @@ module SessionsHelper
     !current_user.nil?
   end
 
-  # 現在のユーザーをログアウトする
+	# 永続的セッションを破棄する
+	def forget(user)
+		user.forget
+		cookies.delete(:user_id)
+		cookies.delete(:remember_token)
+	end
+
+	# 現在のユーザーをログアウトする
   def log_out
+		forget(current_user)
     reset_session
     @current_user = nil
   end
